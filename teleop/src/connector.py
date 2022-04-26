@@ -16,7 +16,7 @@ import src.util as util
 
 class Teleop_Connector:
 
-    def __init__(self, ip_addr, establish_port, command_port, log_port, response_port):
+    def __init__(self, ip_addr, establish_port=42070, command_port=70, log_port=421, response_port=778):
         # Create Ports
         self.logging_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.response_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -30,7 +30,7 @@ class Teleop_Connector:
         self.keystroke_logger.addHandler(keystroke_file_handler)
 
         # Cart Response Logger
-        self.response_logger = logging.getLogger("response_log")
+        self.response_logger = logging.getLogger("responses")
         self.response_logger.setLevel(logging.DEBUG)
 
         response_file_handler = logging.FileHandler("responses.log")
@@ -41,7 +41,7 @@ class Teleop_Connector:
         response_console_handler.setFormatter("%(asctime)s - %(name)s - %(message)s")
         self.response_logger.addHandler(response_console_handler)
 
-        # Cart Response Logger
+        # Cart Log
         self.logger = logging.getLogger("log")
         self.logger.setLevel(logging.DEBUG)
 
@@ -125,7 +125,8 @@ class Teleop_Connector:
 
     # Listens for log info from the server
     def log_listener(self):
-        # Accept Connectiond
+        # Accept Connections
+        self.logging_socket.bind(("", self.log_port))
         self.logging_socket.listen()
 
         while not self.kill:
@@ -139,6 +140,7 @@ class Teleop_Connector:
     # Listens for repsonses from the server
     def response_lister(self):
         # Accept Connections
+        self.response_socket.bind(("", self.response_port))
         self.response_socket.listen()
 
         while not self.kill:

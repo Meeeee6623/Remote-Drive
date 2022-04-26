@@ -1,5 +1,13 @@
 import pyfiglet
 
+# Drive Computer Remote Telop Client
+# Utils
+#
+# Part of the GSSM Autonomous Golf Cart
+# Written by:
+#   Benjamin Chauhan, class of 2022
+#   Joseph Telaak, class of 2022
+
 # ASCII Art Header for Console Output
 title = pyfiglet.figlet_format("GSSM AutoCart", font="slant")
 
